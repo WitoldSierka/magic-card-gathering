@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import HttpsService from './components/HttpsService';
 import UserDeckGallery from './components/UserDeckGallery';
+import FindCards from './components/FindCards';
+import CardTemplate from './components/CardTemplate';
 
 import {
   createBrowserRouter,
@@ -12,25 +14,31 @@ import {
   Route
 } from "react-router-dom";
 
+
 function App() {
 
-  let mockCards = [
+  let mockCards: CardTemplate[] = [
     {
       multiverseid: 386616,
-      imageUrl: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=386616&type=card"
+      imageUrl: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=386616&type=card",
+      originalText: "supercool card"
     },
     {
       multiverseid: 409741,
-      imageUrl: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=409741&type=card"
+      imageUrl: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=409741&type=card",
+      originalText: "supercool card"
     },
     {
       multiverseid: 111111,
-      imageUrl: ""
+      imageUrl: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2&type=card",
+      originalText: "supercool card"
     }
-  ]
+  ];
+
+  const userCards = [];
 
   async function myFunction() {
-    const card = await HttpsService.getCardById(386616);
+    const card = await HttpsService.getCardById(2);
     console.log(card);
   }
 
@@ -42,6 +50,7 @@ function App() {
           <Link to={"/about"} >O nas </Link>
           <Link to={"/card/123456"} >Karta 123456 </Link>
           <Link to={"/userDeck/gallery"} >Your Cards</Link>
+          <Link to={"/findCards"} >Find Cards </Link>
         </div>
           <button onClick={myFunction}>click me</button>
           <h2>Tu będzie menu</h2>
@@ -50,6 +59,7 @@ function App() {
             <Route path='/about' element={<div>O nas</div>} />
             <Route path='/card/:cardI' element={<div>Nazwa karty</div>} />
             <Route path='/userDeck/gallery' element={<UserDeckGallery arrayOfCards={mockCards}/>} />
+            <Route path='/findCards' element={<FindCards />} />
           </Routes>
       </BrowserRouter>
     </div>
