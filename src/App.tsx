@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import HttpsService from './components/HttpsService';
 import UserDeckGallery from './components/UserDeckGallery';
@@ -35,7 +35,7 @@ function App() {
     }
   ];
 
-  const userCards = [];
+  const [userCardsDeck, setUserCardsDeck] = useState<CardTemplate[]>([]);
 
   async function myFunction() {
     const card = await HttpsService.getCardById(2);
