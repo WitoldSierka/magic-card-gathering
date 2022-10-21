@@ -3,7 +3,7 @@ import HttpsService from "./HttpsService";
 import RenderCard from "./RenderCard";
 import CardTemplate from "./CardTemplate";
 
-const FindCards: React.FC<{}> = (props) => {
+const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
 
   const emptyCard: CardTemplate = {imageUrl: '', multiverseid: 0, originalText: 'test_case: empty'};
 
@@ -37,6 +37,7 @@ const FindCards: React.FC<{}> = (props) => {
     try {
       const myPromise = await HttpsService.getCardById(parseInt(specifiedIdValue));
       setFoundCard(myPromise.card);
+      setSpecifiedIdValue('');
     } catch (error) {
       console.log('no card with such id');
     }
@@ -48,7 +49,8 @@ const FindCards: React.FC<{}> = (props) => {
   }
 
   function addCardToDeck() {
-  console.log(foundCard.originalText);
+    //console.log(foundCard.originalText);
+    props.onAddCardToDeck(foundCard);
 
   }
 

@@ -35,11 +35,27 @@ function App() {
     }
   ];
 
-  const [userCardsDeck, setUserCardsDeck] = useState<CardTemplate[]>([]);
+  const [userCardsDeck, setUserCardsDeck] = useState<CardTemplate[]>(() => {
+    const savedDeck  = JSON.parse(localStorage.getItem("magic card gathering user deck") || "") as CardTemplate[];
+    return savedDeck || [];
+  });
 
   async function myFunction() {
     const card = await HttpsService.getCardById(2);
     console.log(card);
+  };
+
+  const cardAddingHandler = (cardToAddToDeck: CardTemplate) => {
+    console.log(cardToAddToDeck.originalText);
+    if (cardToAddToDeck.originalText !== 'test_case: empty') {
+      const updatedDeck: CardTemplate[] = [...userCardsDeck, cardToAddToDeck];
+      setUserCardsDeck(updatedDeck);
+    }
+  };
+
+  const deckSavingHandler = () => {
+    console.log('user wants to save deck');
+    localStorage.setItem("magic card gathering user deck", JSON.stringify(userCardsDeck));
   }
 
   return (
@@ -58,8 +74,8 @@ function App() {
             <Route path='/' element={<div>Hello world!</div>} />
             <Route path='/about' element={<div>O nas</div>} />
             <Route path='/card/:cardI' element={<div>Nazwa karty</div>} />
-            <Route path='/userDeck/gallery' element={<UserDeckGallery arrayOfCards={mockCards}/>} />
-            <Route path='/findCards' element={<FindCards />} />
+            <Route path='/userDeck/gallery' element={<UserDeckGallery arrayOfCards={userCardsDeck} onSaveDeck={deckSavingHandler} />} />
+            <Route path='/findCards' element={<FindCards onAddCardToDeck={cardAddingHandler} />} />
           </Routes>
       </BrowserRouter>
     </div>
