@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
 import HttpsService from './components/HttpsService';
-import UserDeckGallery from './components/UserDeckGallery';
-import FindCards from './components/FindCards';
+import UserDeckGallery from './components/userDeck/UserDeckGallery';
+import FindCards from './components/cardFinding/FindCards';
 import CardTemplate from './components/CardTemplate';
 
 import {
@@ -35,10 +35,10 @@ function App() {
     }
   ];
 
-  const [userCardsDeck, setUserCardsDeck] = useState<CardTemplate[]>(() => {
+  const [userCardsDeck, setUserCardsDeck] = useState<CardTemplate[]>(/*() => {
     const savedDeck  = JSON.parse(localStorage.getItem("magic card gathering user deck") || "") as CardTemplate[];
     return savedDeck || [];
-  });
+  }*/ [] );
 
   async function myFunction() {
     const card = await HttpsService.getCardById(2);

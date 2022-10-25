@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import HttpsService from "./HttpsService";
-import RenderCard from "./RenderCard";
-import CardTemplate from "./CardTemplate";
+import HttpsService from "../HttpsService";
+import RenderCard from "../generic/RenderCard";
+import Checkbox from "../generic/Checkbox";
+import CardTemplate from "../CardTemplate";
+import Config from "../Config";
 
 const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
 
@@ -14,6 +16,10 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
     for (let i = 0; i < 10; i++) {
       try {
         const randomNumber = Math.floor(Math.random() * 399999) + 1;
+        if (Config.invalidCardIds.includes(randomNumber)) {
+          console.log('number invalid, trying again');
+          continue;
+        }
         const myPromise = await HttpsService.getCardById(randomNumber);
         const outputCard = myPromise.card;
         if (outputCard) {
@@ -54,6 +60,10 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
 
   }
 
+  async function specifiedTypeAndOrColors() {
+    
+  }
+
   return (
     <div>
       <button onClick={randomCard}>Random card</button>
@@ -68,6 +78,10 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
         />
       </form>
       <RenderCard card={foundCard} nameOfClass='found-card' />
+      <div className="find-colors-and-types-container">
+        <h5>Find cards that match a type or colors of your choosing</h5>
+        <input type="checkbox" id="colorRed" name="colorRed" value="Red" />
+      </div>
     </div>
   )
 }

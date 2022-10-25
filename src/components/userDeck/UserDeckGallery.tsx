@@ -1,8 +1,8 @@
 import React from "react";
 import './UserDeckGallery.css';
 //import HttpsService from "./HttpsService";
-import CardTemplate from "./CardTemplate";
-import RenderCard from "./RenderCard"
+import CardTemplate from "../CardTemplate";
+import RenderCard from "../generic/RenderCard"
 
 const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any }> = (props) => {
 
