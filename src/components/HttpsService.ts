@@ -26,7 +26,7 @@ class HttpService {
         return await this.makeHttpRequest(`cards/${cardId}`);
     }
 
-    async findCardsByTypeAndColors(type: string, colorIdentity: Array<string>) {
+    async findCardsByTypeAndColors(type: Array<string>, colorIdentity: Array<string>) {
         const args = {
             type,
             colorIdentity
