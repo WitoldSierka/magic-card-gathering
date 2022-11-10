@@ -4,13 +4,19 @@ import RenderCard from "../generic/RenderCard";
 import Checkbox from "../generic/Checkbox";
 import CardTemplate from "../CardTemplate";
 import Config from "../Config";
+import "./FindCards.css";
 
 const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
 
   const emptyCard: CardTemplate = {imageUrl: '', multiverseid: 0, originalText: 'test_case: empty'};
 
   const [foundCard, setFoundCard] = useState<CardTemplate>(emptyCard);
+  const [foundManyCards, setFoundManyCards] = useState<CardTemplate[]>([]);
   const [specifiedIdValue, setSpecifiedIdValue] = useState('');
+  const [chosenColors, setChosenColors] = useState<string[]>([]);
+  const [chosenTypes, setChosenTypes] = useState<string[]>([]);
+
+  const testJSX = <div>testtest12234</div>
 
   async function randomCard() {
     for (let i = 0; i < 10; i++) {
@@ -28,11 +34,8 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
           console.log(foundCard, foundCard.imageUrl);
           break;
         }
-      } catch (error) {
-        console.log('error');
-        /*return (
-          <div>no card found yet, choose one of the search options or try again!</div>
-        );*/
+      } catch (error: any) {
+        //console.log(error.status, error.error);
       }
     }
   }
@@ -61,7 +64,41 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
   }
 
   async function specifiedTypeAndOrColors() {
-    
+    //const chosenType = ["Creature", "Artifact"];
+    try {
+      const myPromise = await HttpsService.findCardsByTypeAndColors(chosenTypes, chosenColors);
+      setFoundManyCards(myPromise.cards);
+      console.log(foundManyCards);
+
+    } catch (error) {
+
+    }
+  }
+
+  const colorCheckboxHandler = (checkboxMessage: {whatColor: string, status: boolean}) => {
+    let colorIdentity = "";
+    for (const element of Config.cardColors) {
+      if (element.name === checkboxMessage.whatColor) {
+        colorIdentity = element.Identity;
+        break;
+      }
+    }
+    //console.log(colorIdentity, checkboxMessage.status);
+    if (checkboxMessage.status) {
+      setChosenColors((prevColors) => {
+        return [colorIdentity, ...prevColors];
+      });
+    } else {
+      setChosenColors((prevColors) => {
+        const colorIndex = prevColors.findIndex(x => x === colorIdentity);
+        return prevColors.splice(colorIndex, 1);
+      });
+    }
+    //console.log(chosenColors);
+  }
+
+  const typeCheckboxHandler = () => {
+
   }
 
   return (
@@ -77,10 +114,37 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
           onChange={handleNumbersOnly}
         />
       </form>
-      <RenderCard card={foundCard} nameOfClass='found-card' />
+      {foundCard.originalText === 'test_case: empty' ? (
+        <h6>No card found yet. Use the find options to search for cards or try again.</h6>
+      ) : (
+        <RenderCard card={foundCard} nameOfClass='found-card' />
+      )}
       <div className="find-colors-and-types-container">
-        <h5>Find cards that match a type or colors of your choosing</h5>
-        <input type="checkbox" id="colorRed" name="colorRed" value="Red" />
+        <h5>Find cards that match a type or colors of your choosing:</h5>
+        <div className="color-option-field">
+          {Config.cardColors.map((color) => <Checkbox label={color.name} designation={"color"} 
+          onCheckboxManager={colorCheckboxHandler} key={color.name} />)}
+        </div>
+        <div className="type-option-field">
+          {Config.possibleTypes.map((type) => <Checkbox label={type} designation={"type"} 
+          onCheckboxManager={typeCheckboxHandler} key={type} />)}
+        </div>
+        <button 
+          className="find-colors-and-types-button" 
+          onClick={specifiedTypeAndOrColors} 
+        >
+        Find cards by colors and types
+        </button>
+      </div>
+      <div className="multiple-found-cards-container">
+        {foundManyCards.length > 0 &&
+          foundManyCards.map((card) => (
+            <RenderCard 
+              card={card}
+              key={Math.random()}
+              nameOfClass="card-in-multiple-found-cards"
+            />
+          ))}
       </div>
     </div>
   )

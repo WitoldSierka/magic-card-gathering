@@ -1,6 +1,8 @@
 class CardTemplate {
   artist?: string;
   cmc?: number;
+  colorIdentity?: string[];
+  colors?: string[];
   id?: string;
   imageUrl: string;
   layout?: string;
@@ -21,8 +23,11 @@ class CardTemplate {
   type?: string;
   types?: string[];
 
-  constructor(card: {artist: string,
+  constructor(card: {
+    artist: string,
     cmc: number,
+    colorIdentity: string[];
+    colors: string[];
     id: string,
     imageUrl: string,
     layout: string,
@@ -44,6 +49,8 @@ class CardTemplate {
   }) {
     this.artist = card.artist;
     this.cmc = card.cmc;
+    this.colorIdentity = card.colorIdentity;
+    this.colors = card.colors;
     this.id = card.id;
     this.imageUrl = card.imageUrl;
     this.layout = card.layout;

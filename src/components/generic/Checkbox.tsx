@@ -2,17 +2,18 @@ import React, { useState } from "react";
 
 const Checkbox: React.FC<{label: string, designation: string, onCheckboxManager: any}> = (props) => {
   const [isChecked, setIsChecked] = useState(false);
-  //const [checkboxValue, setCheckboxValue] = useState(props.label);
 
-  const checkboxManager = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked((prev) => !prev);
-    if (isChecked) {
-      props.onCheckboxManager(event.target.value);
+  const checkboxManager = () => {
+    const checkboxData = {
+      whatColor: props.label,
+      status: !isChecked
     }
+    setIsChecked((prev) => !prev);
+    props.onCheckboxManager(checkboxData);
   }
 
   return (
-    <div className={`checkbox-wrapper-${props.designation}`} key={`${props.designation}/${props.label}`} >
+    <div className={`checkbox-wrapper-${props.designation}`} >
       <label>
         <input type="checkbox" checked={isChecked} value={props.label} onChange={checkboxManager} />
         <span>{props.label}</span>

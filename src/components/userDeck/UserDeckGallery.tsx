@@ -19,7 +19,7 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any }>
       <div>
         <h3>This is your deck</h3>
         <div className="user-deck-gallery">
-          {props.arrayOfCards.map((card: CardTemplate) => <RenderCard card={card} nameOfClass="card-in-gallery" />)}
+          {props.arrayOfCards.map((card: CardTemplate) => <RenderCard card={card} nameOfClass="card-in-gallery" key={Math.random()}/>)}
         </div>
         <button onClick={saveDeck} >Save your deck for later</button>
       </div>
