@@ -18,6 +18,9 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any }>
     return (
       <div>
         <h3>This is your deck</h3>
+        <div className="filter cards">
+          filter cards
+        </div>
         <div className="user-deck-gallery">
           {props.arrayOfCards.map((card: CardTemplate) => <RenderCard card={card} nameOfClass="card-in-gallery" key={Math.random()}/>)}
         </div>

@@ -97,8 +97,11 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
     //console.log(chosenColors);
   }
 
-  const typeCheckboxHandler = () => {
+  const emptyFunction = () => {
+  }
 
+  const cardSelector = () => {
+    const cardOpacity = 0.6
   }
 
   return (
@@ -127,7 +130,7 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
         </div>
         <div className="type-option-field">
           {Config.possibleTypes.map((type) => <Checkbox label={type} designation={"type"} 
-          onCheckboxManager={typeCheckboxHandler} key={type} />)}
+          onCheckboxManager={emptyFunction} key={type} />)}
         </div>
         <button 
           className="find-colors-and-types-button" 
@@ -138,12 +141,15 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
       </div>
       <div className="multiple-found-cards-container">
         {foundManyCards.length > 0 &&
-          foundManyCards.map((card) => (
-            <RenderCard 
-              card={card}
-              key={Math.random()}
-              nameOfClass="card-in-multiple-found-cards"
-            />
+          foundManyCards.filter(el => el.hasOwnProperty('imageUrl')).map((card) => (
+            <div onClick={cardSelector} style={{opacity: 1}}>
+              <RenderCard 
+                card={card}
+                key={Math.random()}
+                nameOfClass="card-in-multiple-found-cards"
+              /> 
+            </div>
+            
           ))}
       </div>
     </div>
