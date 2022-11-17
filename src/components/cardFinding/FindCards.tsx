@@ -75,10 +75,10 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
     }
   }
 
-  const colorCheckboxHandler = (checkboxMessage: {whatColor: string, status: boolean}) => {
+  const colorCheckboxHandler = (checkboxMessage: {whatValue: string, status: boolean}) => {
     let colorIdentity = "";
     for (const element of Config.cardColors) {
-      if (element.name === checkboxMessage.whatColor) {
+      if (element.name === checkboxMessage.whatValue) {
         colorIdentity = element.Identity;
         break;
       }
@@ -97,7 +97,20 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
     //console.log(chosenColors);
   }
 
-  const emptyFunction = () => {
+  const typeCheckboxHandler = (checkboxMessage: {whatValue: string, status: boolean}) => {
+    const typeToHandle = checkboxMessage.whatValue;
+    //console.log(typeToHandle, checkboxMessage.status);
+    if (checkboxMessage.status) {
+      setChosenTypes((prevTypes) => {
+        return [typeToHandle, ...prevTypes];
+      });
+    } else {
+      setChosenTypes((prevTypes) => {
+        const typeIndex = prevTypes.findIndex(x => x === typeToHandle);
+        return prevTypes.splice(typeIndex, 1);
+      });
+    }
+    console.log(chosenTypes);
   }
 
   const cardSelector = () => {
@@ -130,7 +143,7 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
         </div>
         <div className="type-option-field">
           {Config.possibleTypes.map((type) => <Checkbox label={type} designation={"type"} 
-          onCheckboxManager={emptyFunction} key={type} />)}
+          onCheckboxManager={typeCheckboxHandler} key={type} />)}
         </div>
         <button 
           className="find-colors-and-types-button" 
@@ -142,10 +155,9 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
       <div className="multiple-found-cards-container">
         {foundManyCards.length > 0 &&
           foundManyCards.filter(el => el.hasOwnProperty('imageUrl')).map((card) => (
-            <div onClick={cardSelector} style={{opacity: 1}}>
+            <div onClick={cardSelector} style={{opacity: 1}} key={Math.random()}>
               <RenderCard 
                 card={card}
-                key={Math.random()}
                 nameOfClass="card-in-multiple-found-cards"
               /> 
             </div>

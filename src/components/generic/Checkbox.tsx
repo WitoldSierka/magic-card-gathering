@@ -5,7 +5,7 @@ const Checkbox: React.FC<{label: string, designation: string, onCheckboxManager:
 
   const checkboxManager = () => {
     const checkboxData = {
-      whatColor: props.label,
+      whatValue: props.label,
       status: !isChecked
     }
     setIsChecked((prev) => !prev);
