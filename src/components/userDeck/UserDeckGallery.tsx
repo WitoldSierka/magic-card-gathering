@@ -1,12 +1,33 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import './UserDeckGallery.css';
 //import HttpsService from "./HttpsService";
 import CardTemplate from "../CardTemplate";
 import CardsFilter from "../generic/CardsFilter";
 import RenderCard from "../generic/RenderCard"
 
-const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any }> = (props) => {
-  const [filteredMana, setFilteredMana] = useState("0");
+const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, onDeleteCardsFromDeck: any }> = (props) => {
+  const [filteredMana, setFilteredMana] = useState("none");
+  const [cardDeletionPhase, setCardDeletionPhase] = useState(false);
+  const [cursor, setCursor] = useState("auto");
+
+  function setDeletionPhase() {
+    setCardDeletionPhase(prev => !prev);
+  }
+  useEffect(() => {
+    if (cardDeletionPhase) {
+      setCursor("crosshair");
+    } else {
+      setCursor("auto");
+    }
+  }, [cardDeletionPhase])
+
+  const deleteCardsFromDeck = (index: any) => {
+    if (cardDeletionPhase) {
+      let tempArr = [...props.arrayOfCards];
+      tempArr.splice(index, 1);
+      props.onDeleteCardsFromDeck(tempArr);
+    }
+  }
 
   function saveDeck() {
     props.onSaveDeck();
@@ -33,13 +54,20 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any }>
     );
   } else {
     return (
-      <div>
+      <div className="user-deck" style={{cursor: cursor}}>
         <h3>This is your deck</h3>
         <CardsFilter selected={filteredMana} onChangeFilter={filterChangeHandler}/>
         <div className="user-deck-gallery">
-          {filteredCards.map((card: CardTemplate) => <RenderCard card={card} nameOfClass="card-in-gallery" key={Math.random()}/>)}
+          {filteredCards.map((card: CardTemplate, index: number) => {
+            return (
+              <div key={index} onClick={() => deleteCardsFromDeck(index)}>
+                <RenderCard card={card} nameOfClass="card-in-gallery" />
+              </div>
+            )
+          })}
         </div>
         <button onClick={saveDeck} >Save your deck for later</button>
+        <button onClick={setDeletionPhase}>Remove cards from your deck</button>
       </div>
       
     );

@@ -46,12 +46,16 @@ function App() {
   };
 
   const cardAddingHandler = (cardToAddToDeck: CardTemplate) => {
-    console.log(cardToAddToDeck.originalText);
+    //console.log(cardToAddToDeck.originalText);
     if (cardToAddToDeck.originalText !== 'test_case: empty') {
       const updatedDeck: CardTemplate[] = [...userCardsDeck, cardToAddToDeck];
       setUserCardsDeck(updatedDeck);
     }
   };
+
+  const cardRemovingHandler = (newDeck: CardTemplate[]) => {
+    setUserCardsDeck(newDeck)
+  }
 
   const deckSavingHandler = () => {
     console.log('user wants to save deck');
@@ -74,7 +78,7 @@ function App() {
             <Route path='/' element={<div>Hello world!</div>} />
             <Route path='/about' element={<div>O nas</div>} />
             <Route path='/card/:cardI' element={<div>Nazwa karty</div>} />
-            <Route path='/userDeck/gallery' element={<UserDeckGallery arrayOfCards={userCardsDeck} onSaveDeck={deckSavingHandler} />} />
+            <Route path='/userDeck/gallery' element={<UserDeckGallery arrayOfCards={userCardsDeck} onSaveDeck={deckSavingHandler} onDeleteCardsFromDeck={cardRemovingHandler}/>} />
             <Route path='/findCards' element={<FindCards onAddCardToDeck={cardAddingHandler} />} />
           </Routes>
       </BrowserRouter>

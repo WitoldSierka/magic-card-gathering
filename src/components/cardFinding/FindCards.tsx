@@ -42,7 +42,7 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
 
   async function specifiedIdCard(event: any) {
     event.preventDefault();
-    console.log(specifiedIdValue);
+    //console.log(specifiedIdValue);
     try {
       const myPromise = await HttpsService.getCardById(parseInt(specifiedIdValue));
       setFoundCard(myPromise.card);
