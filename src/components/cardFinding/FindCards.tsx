@@ -110,11 +110,11 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
         return prevTypes.splice(typeIndex, 1);
       });
     }
-    console.log(chosenTypes);
   }
 
   const cardSelector = () => {
     const cardOpacity = 0.6
+    console.log("CARD")
   }
 
   return (
