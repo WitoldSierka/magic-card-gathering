@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HttpsService from "../HttpsService";
 import RenderCard from "../generic/RenderCard";
 import Checkbox from "../generic/Checkbox";
@@ -6,17 +6,19 @@ import CardTemplate from "../CardTemplate";
 import Config from "../Config";
 import "./FindCards.css";
 
-const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
+const FindCards: React.FC<{onAddCardToDeck: any, onAddManyCardsToDeck: any}> = (props) => {
 
-  const emptyCard: CardTemplate = {imageUrl: '', multiverseid: 0, originalText: 'test_case: empty'};
+  const emptyCard: CardTemplate = {imageUrl: '', multiverseid: '0', originalText: 'test_case: empty'};
 
   const [foundCard, setFoundCard] = useState<CardTemplate>(emptyCard);
   const [foundManyCards, setFoundManyCards] = useState<CardTemplate[]>([]);
   const [specifiedIdValue, setSpecifiedIdValue] = useState('');
   const [chosenColors, setChosenColors] = useState<string[]>([]);
   const [chosenTypes, setChosenTypes] = useState<string[]>([]);
+  const [manyCardsToAddToDeck, setManyCardsToAddToDeck] = useState<CardTemplate[]>([]);
+  const [cardSelectingPhase, setCardSelectingPhase] = useState<boolean>(false);
 
-  const testJSX = <div>testtest12234</div>
+  //const testJSX = <div>testtest12234</div>
 
   async function randomCard() {
     for (let i = 0; i < 10; i++) {
@@ -60,7 +62,11 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
   function addCardToDeck() {
     //console.log(foundCard.originalText);
     props.onAddCardToDeck(foundCard);
+  }
 
+  function addManyCardsToDeck() {
+    console.log(manyCardsToAddToDeck);
+    props.onAddManyCardsToDeck(manyCardsToAddToDeck);
   }
 
   async function specifiedTypeAndOrColors() {
@@ -112,10 +118,30 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
     }
   }
 
-  const cardSelector = () => {
-    const cardOpacity = 0.6
-    console.log("CARD")
+  const cardToAddSelector = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    let filterValue = event.currentTarget.style.filter;
+    //setRecentlyClickedCard(event.currentTarget);
+    if (event.currentTarget.firstElementChild?.className) {
+      //const idToAdd = event.currentTarget.firstElementChild?.className.substring(29);
+      //console.log(selectedCard, idToAdd);
+      if (filterValue === "") {
+        event.currentTarget.style.filter = "invert(100%)";
+        //const selectedCard = foundManyCards.filter(el => el.hasOwnProperty('imageUrl')).find(el => el.multiverseid === idToAdd)!;
+        //setManyCardsToAddToDeck(prev => [...prev, selectedCard]);
+      } else if (filterValue === "invert(100%)") {
+        event.currentTarget.style.filter = "";
+        //setManyCardsToAddToDeck((prevCards) => {
+        //  const cardIndex = prevCards.findIndex(x => x.multiverseid === idToAdd);
+        //  return prevCards.splice(cardIndex, 1);
+        //})
+      }
+      //console.log(manyCardsToAddToDeck);
+    }
   }
+  useEffect(() => {
+    
+  }, [cardSelectingPhase])
 
   return (
     <div>
@@ -152,10 +178,13 @@ const FindCards: React.FC<{onAddCardToDeck: any}> = (props) => {
         Find cards by colors and types
         </button>
       </div>
+      {cardSelectingPhase ? (<button onClick={addManyCardsToDeck}>Add selected cards to your deck</button>) : (
+        <button onClick={() => setCardSelectingPhase(true)}>Click here to start selecting cards to add to your deck</button>
+      )}
       <div className="multiple-found-cards-container">
         {foundManyCards.length > 0 &&
           foundManyCards.filter(el => el.hasOwnProperty('imageUrl')).map((card) => (
-            <div onClick={cardSelector} style={{opacity: 1}} key={Math.random()}>
+            <div onClick={cardToAddSelector} /*style={{filter: colorInversion}}*/ key={Math.random()}>
               <RenderCard 
                 card={card}
                 nameOfClass="card-in-multiple-found-cards"

@@ -9,7 +9,7 @@ class CardTemplate {
   legalities?: {format: string, legality: string}[];
   manaCost?: string;
   /*"{3}"*/
-  multiverseid: number;
+  multiverseid: string;
   name?: string;
   number?: number;
   originalText: string;
@@ -33,7 +33,7 @@ class CardTemplate {
     layout: string,
     legalities: {format: string, legality: string}[],
     manaCost: string,
-    multiverseid: number,
+    multiverseid: string,
     name: string,
     number: number,
     originalText: string,

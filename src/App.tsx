@@ -17,7 +17,7 @@ import {
 
 function App() {
 
-  let mockCards: CardTemplate[] = [
+  /*let mockCards: CardTemplate[] = [
     {
       multiverseid: 386616,
       imageUrl: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=386616&type=card",
@@ -33,7 +33,7 @@ function App() {
       imageUrl: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2&type=card",
       originalText: "supercool card"
     }
-  ];
+  ];*/
 
   const [userCardsDeck, setUserCardsDeck] = useState<CardTemplate[]>(/*() => {
     const savedDeck  = JSON.parse(localStorage.getItem("magic card gathering user deck") || "") as CardTemplate[];
@@ -45,12 +45,17 @@ function App() {
     console.log(card);
   };
 
-  const cardAddingHandler = (cardToAddToDeck: CardTemplate) => {
-    //console.log(cardToAddToDeck.originalText);
-    if (cardToAddToDeck.originalText !== 'test_case: empty') {
-      const updatedDeck: CardTemplate[] = [...userCardsDeck, cardToAddToDeck];
-      setUserCardsDeck(updatedDeck);
+  const cardAddingHandler = (cardToAddToDeck: CardTemplate | CardTemplate[]) => {
+    if (Array.isArray(cardToAddToDeck)) {
+      const newDeck: CardTemplate[] = userCardsDeck.concat(cardToAddToDeck);
+      setUserCardsDeck(newDeck);
+    } else {
+      if (cardToAddToDeck.originalText !== 'test_case: empty') {
+        const updatedDeck: CardTemplate[] = [...userCardsDeck, cardToAddToDeck];
+        setUserCardsDeck(updatedDeck);
+      }
     }
+    
   };
 
   const cardRemovingHandler = (newDeck: CardTemplate[]) => {
@@ -79,7 +84,7 @@ function App() {
             <Route path='/about' element={<div>O nas</div>} />
             <Route path='/card/:cardI' element={<div>Nazwa karty</div>} />
             <Route path='/userDeck/gallery' element={<UserDeckGallery arrayOfCards={userCardsDeck} onSaveDeck={deckSavingHandler} onDeleteCardsFromDeck={cardRemovingHandler}/>} />
-            <Route path='/findCards' element={<FindCards onAddCardToDeck={cardAddingHandler} />} />
+            <Route path='/findCards' element={<FindCards onAddCardToDeck={cardAddingHandler} onAddManyCardsToDeck={cardAddingHandler} />} />
           </Routes>
       </BrowserRouter>
     </div>
