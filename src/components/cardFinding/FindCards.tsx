@@ -67,6 +67,7 @@ const FindCards: React.FC<{onAddCardToDeck: any, onAddManyCardsToDeck: any}> = (
   function addManyCardsToDeck() {
     console.log(manyCardsToAddToDeck);
     props.onAddManyCardsToDeck(manyCardsToAddToDeck);
+    cancelCardSelecting();
   }
 
   async function specifiedTypeAndOrColors() {
@@ -120,28 +121,37 @@ const FindCards: React.FC<{onAddCardToDeck: any, onAddManyCardsToDeck: any}> = (
 
   const cardToAddSelector = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    let filterValue = event.currentTarget.style.filter;
-    //setRecentlyClickedCard(event.currentTarget);
-    if (event.currentTarget.firstElementChild?.className) {
-      //const idToAdd = event.currentTarget.firstElementChild?.className.substring(29);
-      //console.log(selectedCard, idToAdd);
-      if (filterValue === "") {
-        event.currentTarget.style.filter = "invert(100%)";
-        //const selectedCard = foundManyCards.filter(el => el.hasOwnProperty('imageUrl')).find(el => el.multiverseid === idToAdd)!;
-        //setManyCardsToAddToDeck(prev => [...prev, selectedCard]);
-      } else if (filterValue === "invert(100%)") {
-        event.currentTarget.style.filter = "";
-        //setManyCardsToAddToDeck((prevCards) => {
-        //  const cardIndex = prevCards.findIndex(x => x.multiverseid === idToAdd);
-        //  return prevCards.splice(cardIndex, 1);
-        //})
-      }
-      //console.log(manyCardsToAddToDeck);
+    if (cardSelectingPhase) {
+      let filterValue = event.currentTarget.style.filter;
+      //setRecentlyClickedCard(event.currentTarget);
+      if (event.currentTarget.firstElementChild?.className) {
+        const idToAdd = event.currentTarget.firstElementChild?.className.substring(29);
+        //console.log(selectedCard, idToAdd);
+        if (filterValue === "") {
+          event.currentTarget.style.filter = "invert(100%)";
+          const selectedCard = foundManyCards.filter(el => el.hasOwnProperty('imageUrl')).find(el => el.multiverseid === idToAdd)!;
+          //console.log(event.currentTarget);
+          setManyCardsToAddToDeck(prev => [...prev, selectedCard]);
+        } else if (filterValue === "invert(100%)") {
+          event.currentTarget.style.filter = "";
+          //console.log(event.currentTarget);
+          setManyCardsToAddToDeck((prevCards) => {
+            const cardIndex = prevCards.findIndex(x => x.multiverseid === idToAdd);
+            return prevCards.splice(cardIndex, 1);
+          })
+        }
+        //console.log(manyCardsToAddToDeck);
+      }      
     }
   }
   useEffect(() => {
     
   }, [cardSelectingPhase])
+
+  const cancelCardSelecting = () => {
+    setCardSelectingPhase(false)
+    setManyCardsToAddToDeck([]);
+  }
 
   return (
     <div>
@@ -178,8 +188,13 @@ const FindCards: React.FC<{onAddCardToDeck: any, onAddManyCardsToDeck: any}> = (
         Find cards by colors and types
         </button>
       </div>
-      {cardSelectingPhase ? (<button onClick={addManyCardsToDeck}>Add selected cards to your deck</button>) : (
-        <button onClick={() => setCardSelectingPhase(true)}>Click here to start selecting cards to add to your deck</button>
+      {cardSelectingPhase ? (
+        <div>
+          <button onClick={addManyCardsToDeck}>Add selected cards to your deck</button>
+          <button onClick={cancelCardSelecting} >Cancel</button>
+        </div>
+      ) : (
+        <button onClick={() => setCardSelectingPhase(true)}>Click here to start adding cards to your deck</button>
       )}
       <div className="multiple-found-cards-container">
         {foundManyCards.length > 0 &&
