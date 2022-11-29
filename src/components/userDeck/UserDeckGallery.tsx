@@ -38,10 +38,12 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, o
     if (filteredMana === "none") return true;
     let cardsMana = 0;
     if (card.manaCost !== undefined) {
-      if (!Number.isNaN(card.manaCost[1])) {
-        cardsMana = Number(card.manaCost[1]);
+      cardsMana += card.manaCost.length / 3;
+      if (!Number.isNaN(Number(card.manaCost[1]))) {
+        cardsMana += Number(card.manaCost[1]) - 1;
       }
     }
+
     return cardsMana <= Number(filteredMana);
   });
 

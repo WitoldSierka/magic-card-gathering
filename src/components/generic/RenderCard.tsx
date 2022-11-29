@@ -20,9 +20,7 @@ class RenderCard extends React.Component<MyProps, MyState> {
       count: 0
     }
   }
-  componentDidMount(): void {
-    //console.log("RENDERED NEW CARD", this.props.card.multiverseid);
-  }
+  
   selectorManager = () => {
     this.setState((state) => {
       return {isSelected: !state.isSelected};
