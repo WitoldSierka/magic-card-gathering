@@ -10,9 +10,6 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, o
   const [cardDeletionPhase, setCardDeletionPhase] = useState(false);
   const [cursor, setCursor] = useState("auto");
 
-  function setDeletionPhase() {
-    setCardDeletionPhase(prev => !prev);
-  }
   useEffect(() => {
     if (cardDeletionPhase) {
       setCursor("crosshair");
@@ -61,13 +58,17 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, o
           {filteredCards.map((card: CardTemplate, index: number) => {
             return (
               <div key={index} onClick={() => deleteCardsFromDeck(index)}>
-                <RenderCard card={card} nameOfClass="card-in-gallery" />
+                <RenderCard card={card} nameOfClass="card-in-gallery" isSelectable={false}/>
               </div>
             )
           })}
         </div>
         <button onClick={saveDeck} >Save your deck for later</button>
-        <button onClick={setDeletionPhase}>Remove cards from your deck</button>
+        {cardDeletionPhase? (
+          <button onClick={() => setCardDeletionPhase(false)}>Cancel removing cards</button>
+        ) : (
+          <button onClick={() => setCardDeletionPhase(true)}>Remove cards from your deck</button>
+        )}
       </div>
       
     );

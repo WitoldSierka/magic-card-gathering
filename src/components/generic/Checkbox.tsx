@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Checkbox: React.FC<{label: string, designation: string, onCheckboxManager: any}> = (props) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const checkboxManager = () => {
+    setIsChecked((prev) => !prev);
+  }
+  useEffect(() => {
     const checkboxData = {
       whatValue: props.label,
-      status: !isChecked
+      status: isChecked
     }
-    setIsChecked((prev) => !prev);
     props.onCheckboxManager(checkboxData);
-  }
+  }, [isChecked]);
 
   return (
     <div className={`checkbox-wrapper-${props.designation}`} >

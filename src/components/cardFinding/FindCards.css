@@ -10,3 +10,7 @@
     margin: 15px;
     align-content: flex-start;
 }
+
+.selected-card {
+    filter: invert(100%)
+}
