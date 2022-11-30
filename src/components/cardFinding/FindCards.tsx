@@ -30,7 +30,7 @@ const FindCards: React.FC<{onAddCardToDeck: any, onAddManyCardsToDeck: any}> = (
         uniqueIds.add(card.multiverseid);
       }
     })
-    return uniqueCards.slice(0, 10);
+    return uniqueCards;
   }
 
   async function randomCard() {
@@ -84,12 +84,11 @@ const FindCards: React.FC<{onAddCardToDeck: any, onAddManyCardsToDeck: any}> = (
   }
 
   async function specifiedTypeAndOrColors() {
-    //const chosenType = ["Creature", "Artifact"];
     try {
+      console.log(chosenColors, chosenTypes);
       const myPromise = await HttpsService.findCardsByTypeAndColors(chosenTypes, chosenColors);
       setFoundManyCards(myPromise.cards);
-      console.log(foundManyCards);
-
+      //console.log(foundManyCards);
     } catch (error) {
 
     }
@@ -103,6 +102,7 @@ const FindCards: React.FC<{onAddCardToDeck: any, onAddManyCardsToDeck: any}> = (
         break;
       }
     }
+
     if (checkboxMessage.status) {
       setChosenColors((prevColors) => {
         return [colorIdentity, ...prevColors];
@@ -110,7 +110,8 @@ const FindCards: React.FC<{onAddCardToDeck: any, onAddManyCardsToDeck: any}> = (
     } else {
       setChosenColors((prevColors) => {
         const colorIndex = prevColors.findIndex(x => x === colorIdentity);
-        return prevColors.splice(colorIndex, 1);
+        prevColors.splice(colorIndex, 1);
+        return prevColors;
       });
     }
   }
@@ -124,7 +125,8 @@ const FindCards: React.FC<{onAddCardToDeck: any, onAddManyCardsToDeck: any}> = (
     } else {
       setChosenTypes((prevTypes) => {
         const typeIndex = prevTypes.findIndex(x => x === typeToHandle);
-        return prevTypes.splice(typeIndex, 1);
+        prevTypes.splice(typeIndex, 1);
+        return prevTypes;
       });
     }
   }

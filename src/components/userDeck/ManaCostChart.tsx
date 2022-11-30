@@ -39,7 +39,7 @@ const ManaCostChart: React.FC<MyProps> = (props) => {
     finalManaColumns.push(column);
   })
   finalManaColumns.sort((a, b) => Number(a.label) - Number(b.value));
-  console.log(finalManaColumns);
+  
   return (
     <Chart 
       dataPoints={finalManaColumns}

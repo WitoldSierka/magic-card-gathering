@@ -1,27 +1,48 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-const Checkbox: React.FC<{label: string, designation: string, onCheckboxManager: any}> = (props) => {
-  const [isChecked, setIsChecked] = useState(false);
-
-  const checkboxManager = () => {
-    setIsChecked((prev) => !prev);
-  }
-  useEffect(() => {
-    const checkboxData = {
-      whatValue: props.label,
-      status: isChecked
+interface MyProps{
+  label: string,
+  designation: string,
+  onCheckboxManager: any
+}
+interface MyState{
+  isChecked: boolean
+}
+class Checkbox extends React.Component<MyProps, MyState> {
+  constructor(props: MyProps) {
+    super(props);
+    this.state = {
+      isChecked: false
     }
-    props.onCheckboxManager(checkboxData);
-  }, [isChecked]);
+  }
 
-  return (
-    <div className={`checkbox-wrapper-${props.designation}`} >
-      <label>
-        <input type="checkbox" checked={isChecked} value={props.label} onChange={checkboxManager} />
-        <span>{props.label}</span>
-      </label>
-    </div>
-  );
+  checkboxManager = () => {
+    this.setState((prevState) => {
+      return {isChecked: !prevState.isChecked}
+    });
+  }
+
+  componentDidUpdate(prevProps: MyProps, prevState: MyState): void {
+    if (prevState.isChecked !== this.state.isChecked) {
+      const checkboxData = {
+        whatValue: this.props.label,
+        status: this.state.isChecked
+      }
+      this.props.onCheckboxManager(checkboxData);
+      console.log(checkboxData);
+    }
+  }
+
+  render() {
+    return (
+      <div className={`checkbox-wrapper-${this.props.designation}`} >
+        <label>
+          <input type="checkbox" checked={this.state.isChecked} value={this.props.label} onChange={this.checkboxManager} />
+          <span>{this.props.label}</span>
+        </label>
+      </div>
+    );    
+  }
 };
 
 export default Checkbox;
