@@ -40,11 +40,6 @@ function App() {
     return savedDeck || [];
   }*/ [] );
 
-  async function myFunction() {
-    const card = await HttpsService.getCardById(2);
-    console.log(card);
-  };
-
   const cardAddingHandler = (cardToAddToDeck: CardTemplate | CardTemplate[]) => {
     if (Array.isArray(cardToAddToDeck)) {
       const newDeck: CardTemplate[] = userCardsDeck.concat(cardToAddToDeck);
@@ -70,18 +65,14 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <div className="navMenu">
+        <div className="nav-menu">
           <Link to={"/"} >Strona główna</Link>
-          <Link to={"/about"} >O nas </Link>
           <Link to={"/card/123456"} >Karta 123456 </Link>
           <Link to={"/userDeck/gallery"} >Your Cards</Link>
           <Link to={"/findCards"} >Find Cards </Link>
         </div>
-          <button onClick={myFunction}>click me</button>
-          <h2>Tu będzie menu</h2>
           <Routes>
             <Route path='/' element={<div>Hello world!</div>} />
-            <Route path='/about' element={<div>O nas</div>} />
             <Route path='/card/:cardI' element={<div>Nazwa karty</div>} />
             <Route path='/userDeck/gallery' element={<UserDeckGallery arrayOfCards={userCardsDeck} onSaveDeck={deckSavingHandler} onDeleteCardsFromDeck={cardRemovingHandler}/>} />
             <Route path='/findCards' element={<FindCards onAddCardToDeck={cardAddingHandler} onAddManyCardsToDeck={cardAddingHandler} />} />

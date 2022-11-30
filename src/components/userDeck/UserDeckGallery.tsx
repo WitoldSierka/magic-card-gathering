@@ -3,6 +3,7 @@ import './UserDeckGallery.css';
 //import HttpsService from "./HttpsService";
 import CardTemplate from "../CardTemplate";
 import CardsFilter from "../generic/CardsFilter";
+import ManaCostChart from "./ManaCostChart";
 import RenderCard from "../generic/RenderCard"
 
 const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, onDeleteCardsFromDeck: any }> = (props) => {
@@ -54,7 +55,7 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, o
   } else {
     return (
       <div className="user-deck" style={{cursor: cursor}}>
-        <h3>This is your deck</h3>
+        <h1>This is your deck</h1>
         <CardsFilter selected={filteredMana} onChangeFilter={filterChangeHandler}/>
         <div className="user-deck-gallery">
           {filteredCards.map((card: CardTemplate, index: number) => {
@@ -71,8 +72,8 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, o
         ) : (
           <button onClick={() => setCardDeletionPhase(true)}>Remove cards from your deck</button>
         )}
+        <ManaCostChart arrayOfCards={filteredCards}/>
       </div>
-      
     );
   }
 
