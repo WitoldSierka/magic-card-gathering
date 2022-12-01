@@ -38,7 +38,7 @@ const ManaCostChart: React.FC<MyProps> = (props) => {
     const column = {maxValue: maxCards, label: value, value: key};
     finalManaColumns.push(column);
   })
-  finalManaColumns.sort((a, b) => Number(a.label) - Number(b.value));
+  finalManaColumns.sort((a, b) => Number(a.label) - Number(b.label));
   
   return (
     <Chart 
