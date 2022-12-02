@@ -11,7 +11,7 @@ class HttpService {
                 'Content-Type': 'application/json'
               })
             });
-            console.log("RESP", response);
+            //console.log("RESP", response);
             if (!response.ok) {
                 return Promise.reject(response.statusText);
               }

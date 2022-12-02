@@ -1,4 +1,4 @@
-class CardTemplate {
+interface CardTemplate {
   artist?: string;
   cmc?: number;
   colorIdentity?: string[];
@@ -9,7 +9,7 @@ class CardTemplate {
   legalities?: {format: string, legality: string}[];
   manaCost?: string;
   /*"{3}"*/
-  multiverseid: number;
+  multiverseid: string;
   name?: string;
   number?: number;
   originalText: string;
@@ -23,7 +23,7 @@ class CardTemplate {
   type?: string;
   types?: string[];
 
-  constructor(card: {
+  /*constructor(card: {
     artist: string,
     cmc: number,
     colorIdentity: string[];
@@ -33,7 +33,7 @@ class CardTemplate {
     layout: string,
     legalities: {format: string, legality: string}[],
     manaCost: string,
-    multiverseid: number,
+    multiverseid: string,
     name: string,
     number: number,
     originalText: string,
@@ -69,7 +69,7 @@ class CardTemplate {
     this.text = card.text;
     this.type = card.type;
     this.types = card.types;
-  }
+  }*/
 }
 
 export default CardTemplate;

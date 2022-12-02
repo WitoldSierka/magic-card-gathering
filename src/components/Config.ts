@@ -23,7 +23,8 @@ const Config = {
       Identity: "G"
     }
   ],
-  possibleTypes: ["Artifact", "Creature", "Enchantment","Land", "Instant", "Sorcery"]
+  possibleTypes: ["Artifact", "Conspiracy", "Creature", "Enchantment", "Instant", "Land", 
+    "Phenomenon", "Plane", "Planeswalker", "Scheme", "Sorcery", "Tribal", "Vanguard"]
 }
 
 export default Config;
