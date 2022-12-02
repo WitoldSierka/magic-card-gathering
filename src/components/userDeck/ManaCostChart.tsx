@@ -17,14 +17,7 @@ const ManaCostChart: React.FC<MyProps> = (props) => {
   let manaCostInColumns: Map<string, number> = new Map();
   let maxCards: number = 0;
   props.arrayOfCards.forEach((card: CardTemplate) => {
-    let cardCost = 0;
-    if (card.manaCost !== undefined) {
-      cardCost += card.manaCost.length / 3;
-      if (!Number.isNaN(Number(card.manaCost[1]))) {
-        cardCost += Number(card.manaCost[1]) - 1;
-      }
-    }
-    const cardLabel = cardCost.toString();
+    const cardLabel = card.cmc!.toString();
     if (manaCostInColumns.has(cardLabel)) {
       manaCostInColumns.set(cardLabel, manaCostInColumns.get(cardLabel)! + 1);
     } else {

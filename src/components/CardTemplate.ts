@@ -1,7 +1,6 @@
 interface CardTemplate {
   artist?: string;
   cmc?: number;
-  comparableMana?: number;
   colorIdentity?: string[];
   colors?: string[];
   id?: string;

@@ -23,27 +23,6 @@ class SortCards extends React.Component<MyProps, MyState> {
     //console.log(this.state.selectedSort);
   }
 
-  sortCardsByMana = (arr: CardTemplate[], isIncreasing: boolean): CardTemplate[] => {
-    let tempArr = arr.map(card => {
-      let cardsMana = 0;
-      if (card.manaCost !== undefined) {
-        cardsMana += card.manaCost.length / 3;
-        if (!Number.isNaN(Number(card.manaCost[1]))) {
-          cardsMana += Number(card.manaCost[1]) - 1;
-        }
-      }
-      card.comparableMana = cardsMana;
-      return card;
-    })
-    if (isIncreasing) {
-      tempArr.sort((a, b) => a.comparableMana! - b.comparableMana!);
-      return tempArr;
-    } else {
-      tempArr.sort((a, b) => b.comparableMana! - a.comparableMana!);
-      return tempArr;
-    }
-  }
-
   componentDidUpdate(prevProps: MyProps, prevState: MyState): void {
    /*if (prevProps.selectedSort !== this.props.selectedSort) {
     
@@ -52,11 +31,10 @@ class SortCards extends React.Component<MyProps, MyState> {
     console.log("UPDATE", this.state.selectedSort)
     switch (this.state.selectedSort) {
       case "mana-cost-inc":
-        const sorted = this.sortCardsByMana(this.props.arrayOfCards, true);
-        this.props.onSelectedSorting(sorted);
+        this.props.onSelectedSorting(this.props.arrayOfCards.sort((a, b) => a.cmc! - b.cmc!));
         break;
       case "mana-cost-dec":
-        this.sortCardsByMana(this.props.arrayOfCards, false);
+        this.props.onSelectedSorting(this.props.arrayOfCards.sort((a, b) => b.cmc! - a.cmc!));
         break;
       default:
         this.props.onSelectedSorting(this.props.arrayOfCards);
