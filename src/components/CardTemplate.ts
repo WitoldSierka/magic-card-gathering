@@ -1,6 +1,7 @@
-class CardTemplate {
+interface CardTemplate {
   artist?: string;
   cmc?: number;
+  comparableMana?: number;
   colorIdentity?: string[];
   colors?: string[];
   id?: string;
@@ -23,7 +24,7 @@ class CardTemplate {
   type?: string;
   types?: string[];
 
-  constructor(card: {
+  /*constructor(card: {
     artist: string,
     cmc: number,
     colorIdentity: string[];
@@ -69,7 +70,7 @@ class CardTemplate {
     this.text = card.text;
     this.type = card.type;
     this.types = card.types;
-  }
+  }*/
 }
 
 export default CardTemplate;

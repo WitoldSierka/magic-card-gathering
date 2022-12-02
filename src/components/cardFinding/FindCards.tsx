@@ -46,7 +46,7 @@ const FindCards: React.FC<{onAddCardToDeck: any, onAddManyCardsToDeck: any}> = (
         if (outputCard) {
           console.log("we have a card", outputCard);
           setFoundCard(outputCard);
-          console.log(foundCard, foundCard.imageUrl);
+          //console.log(foundCard, foundCard.imageUrl);
           break;
         }
       } catch (error: any) {
@@ -78,14 +78,14 @@ const FindCards: React.FC<{onAddCardToDeck: any, onAddManyCardsToDeck: any}> = (
   }
 
   function addManyCardsToDeck() {
-    console.log(manyCardsToAddToDeck);
+    //console.log(manyCardsToAddToDeck);
     props.onAddManyCardsToDeck(manyCardsToAddToDeck);
     cancelCardSelecting();
   }
 
   async function specifiedTypeAndOrColors() {
     try {
-      console.log(chosenColors, chosenTypes);
+      //console.log(chosenColors, chosenTypes);
       const myPromise = await HttpsService.findCardsByTypeAndColors(chosenTypes, chosenColors);
       setFoundManyCards(myPromise.cards);
       //console.log(foundManyCards);
@@ -151,7 +151,7 @@ const FindCards: React.FC<{onAddCardToDeck: any, onAddManyCardsToDeck: any}> = (
   }
 
   const cancelCardSelecting = () => {
-    console.log("CANCEL");
+    //console.log("CANCEL");
     setCardSelectingPhase(false);
     setManyCardsToAddToDeck([]);
   }

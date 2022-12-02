@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import HttpsService from './components/HttpsService';
+//import HttpsService from './components/HttpsService';
 import UserDeckGallery from './components/userDeck/UserDeckGallery';
 import FindCards from './components/cardFinding/FindCards';
 import CardTemplate from './components/CardTemplate';
@@ -16,24 +16,6 @@ import {
 
 
 function App() {
-
-  /*let mockCards: CardTemplate[] = [
-    {
-      multiverseid: 386616,
-      imageUrl: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=386616&type=card",
-      originalText: "supercool card"
-    },
-    {
-      multiverseid: 409741,
-      imageUrl: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=409741&type=card",
-      originalText: "supercool card"
-    },
-    {
-      multiverseid: 111111,
-      imageUrl: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2&type=card",
-      originalText: "supercool card"
-    }
-  ];*/
 
   const [userCardsDeck, setUserCardsDeck] = useState<CardTemplate[]>(/*() => {
     const savedDeck  = JSON.parse(localStorage.getItem("magic card gathering user deck") || "") as CardTemplate[];

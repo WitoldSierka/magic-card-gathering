@@ -5,11 +5,13 @@ import CardTemplate from "../CardTemplate";
 import CardsFilter from "../generic/CardsFilter";
 import ManaCostChart from "./ManaCostChart";
 import RenderCard from "../generic/RenderCard"
+import SortCards from "../generic/SortCards";
 
 const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, onDeleteCardsFromDeck: any }> = (props) => {
   const [filteredMana, setFilteredMana] = useState("none");
   const [cardDeletionPhase, setCardDeletionPhase] = useState(false);
   const [cursor, setCursor] = useState("auto");
+ // const [memorizedSort, setMemorizedSort] = useState("default");
 
   useEffect(() => {
     if (cardDeletionPhase) {
@@ -18,6 +20,11 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, o
       setCursor("auto");
     }
   }, [cardDeletionPhase])
+
+  const memorizeSortHandler = (arr: any) => {
+    console.log(arr);
+    //setMemorizedSort(xx);
+  }
 
   const deleteCardsFromDeck = (index: any) => {
     if (cardDeletionPhase) {
@@ -57,6 +64,7 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, o
       <div className="user-deck" style={{cursor: cursor}}>
         <h1>This is your deck</h1>
         <CardsFilter selected={filteredMana} onChangeFilter={filterChangeHandler}/>
+        <SortCards onSelectedSorting={memorizeSortHandler} arrayOfCards={filteredCards} />
         <div className="user-deck-gallery">
           {filteredCards.map((card: CardTemplate, index: number) => {
             return (
