@@ -11,7 +11,7 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, o
   const [filteredMana, setFilteredMana] = useState("none");
   const [cardDeletionPhase, setCardDeletionPhase] = useState(false);
   const [cursor, setCursor] = useState("auto");
- // const [memorizedSort, setMemorizedSort] = useState("default");
+  const [sort, setSort] = useState<string>("");
 
   useEffect(() => {
     if (cardDeletionPhase) {
@@ -21,9 +21,8 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, o
     }
   }, [cardDeletionPhase])
 
-  const memorizeSortHandler = (arr: any) => {
-    console.log(arr);
-    //setMemorizedSort(xx);
+  function sortHandler(whatSort: string) {
+    setSort(whatSort);
   }
 
   const deleteCardsFromDeck = (index: any) => {
@@ -42,10 +41,30 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, o
     setFilteredMana(selectedMana);
   }
 
-  const filteredCards = props.arrayOfCards.filter((card: CardTemplate) => {
-    if (filteredMana === "none") return true;
-    return card.cmc! <= Number(filteredMana);
-  });
+  function cardSortandFilter(arrOfCards: CardTemplate[]) {
+    let tempArr = arrOfCards.filter((card) => {
+      if (filteredMana === "none") return true;
+      return card.cmc! <= Number(filteredMana);
+    });
+    switch (sort) {
+      case "mana-cost-inc":
+        return tempArr.sort((a, b) => a.cmc! - b.cmc!);
+      case "mana-cost-dec":
+        return tempArr.sort((a, b) => b.cmc! - a.cmc!);
+      case "nameAZ":
+        return tempArr.sort((a, b) => a.name!.localeCompare(b.name!));
+      case "nameZA":
+        return tempArr.sort((a, b) => b.name!.localeCompare(a.name!));
+      case "typeAZ":
+        return tempArr.sort((a, b) => a.type!.localeCompare(b.type!));
+      case "typeZA":
+        return tempArr.sort((a, b) => b.type!.localeCompare(a.type!));
+      default:
+        return tempArr;
+    }
+  }
+
+  const readyToRenderCards = cardSortandFilter(props.arrayOfCards);
 
   if (props.arrayOfCards.length === 0) {
     return (
@@ -56,9 +75,9 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, o
       <div className="user-deck" style={{cursor: cursor}}>
         <h1>This is your deck</h1>
         <CardsFilter selected={filteredMana} onChangeFilter={filterChangeHandler}/>
-        <SortCards onSelectedSorting={memorizeSortHandler} arrayOfCards={filteredCards} />
+        <SortCards onSelectedSorting={sortHandler} />
         <div className="user-deck-gallery">
-          {filteredCards.map((card: CardTemplate, index: number) => {
+          {readyToRenderCards.map((card: CardTemplate, index: number) => {
             return (
               <div key={index} onClick={() => deleteCardsFromDeck(index)}>
                 <RenderCard card={card} nameOfClass="card-in-gallery" isSelectable={false}/>
@@ -72,7 +91,7 @@ const UserDeckGallery: React.FC<{arrayOfCards: CardTemplate[], onSaveDeck:any, o
         ) : (
           <button onClick={() => setCardDeletionPhase(true)}>Remove cards from your deck</button>
         )}
-        <ManaCostChart arrayOfCards={filteredCards}/>
+        <ManaCostChart arrayOfCards={readyToRenderCards}/>
       </div>
     );
   }
